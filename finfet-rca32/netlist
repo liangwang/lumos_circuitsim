@@ -1,0 +1,145 @@
+// vim: fdm=marker: ft=spectre
+simulator lang=spectre
+
+
+// Library name: NangateOpenCellLibrary2
+// Cell name: FA_X1 A B CI CO S VDD VSS{{{
+// View name: schematic
+subckt FA_X1 A B CI CO S VDD VSS
+    M_transistor_2 (S sn VDD VDD) pfet m=1
+    M_MP7 (VDD B int008 VDD) pfet m=2
+    M_MP6 (int008 A VDD VDD) pfet m=2
+    M_MP8 (VDD CI int008 VDD) pfet m=2
+    M_MP9 (int008 co_neg sn VDD) pfet m=2
+    M_MP12 (sn CI int005 VDD) pfet m=3
+    M_MP11 (int005 B int004 VDD) pfet m=3
+    M_MP10 (int004 A VDD VDD) pfet m=3
+    M_MP1 (VDD A int000 VDD) pfet m=2
+    M_MP2 (int000 B VDD VDD) pfet m=2
+    M_MP3 (co_neg CI int000 VDD) pfet m=2
+    M_MP5 (int001 A co_neg VDD) pfet m=2
+    M_MP4 (VDD B int001 VDD) pfet m=2
+    M_transistor_0 (VDD co_neg CO VDD) pfet m=1
+    M_transistor_3 (S sn VSS VSS) nfet w=1
+    M_MN7 (VSS B int009 VSS) nfet m=1
+    M_MN6 (int009 A VSS VSS) nfet m=1
+    M_MN8 (VSS CI int009 VSS) nfet m=1
+    M_MN9 (int009 co_neg sn VSS) nfet m=1
+    M_MN12 (sn CI int006 VSS) nfet m=2
+    M_MN11 (int006 B int007 VSS) nfet m=2
+    M_MN10 (int007 A VSS VSS) nfet m=2
+    M_MN1 (VSS A int002 VSS) nfet m=1
+    M_MN2 (int002 B VSS VSS) nfet m=1
+    M_MN3 (co_neg CI int002 VSS) nfet m=1
+    M_MN5 (int003 A co_neg VSS) nfet m=1
+    M_MN4 (VSS B int003 VSS) nfet m=1
+    M_transistor_1 (VSS co_neg CO VSS) nfet w=1
+ends FA_X1
+// End of subcircuit definition. }}}
+
+// Library name: or1200
+// Cell name: ripple_carry_adder {{{
+// View name: schematic
+FA0 (B_0 A_0 CI C_0 S_0 VDD VSS) FA_X1
+FA1 (B_1 A_1 C_0 C_1 S_1 VDD VSS) FA_X1
+FA2 (B_2 A_2 C_1 C_2 S_2 VDD VSS) FA_X1
+FA3 (B_3 A_3 C_2 C_3 S_3 VDD VSS) FA_X1
+FA4 (B_4 A_4 C_3 C_4 S_4 VDD VSS) FA_X1
+FA5 (B_5 A_5 C_4 C_5 S_5 VDD VSS) FA_X1
+FA6 (B_6 A_6 C_5 C_6 S_6 VDD VSS) FA_X1
+FA7 (B_7 A_7 C_6 C_7 S_7 VDD VSS) FA_X1
+FA8 (B_8 A_8 C_7 C_8 S_8 VDD VSS) FA_X1
+FA9 (B_9 A_9 C_8 C_9 S_9 VDD VSS) FA_X1
+FA10 (B_10 A_10 C_9 C_10 S_10 VDD VSS) FA_X1
+FA11 (B_11 A_11 C_10 C_11 S_11 VDD VSS) FA_X1
+FA12 (B_12 A_12 C_11 C_12 S_12 VDD VSS) FA_X1
+FA13 (B_13 A_13 C_12 C_13 S_13 VDD VSS) FA_X1
+FA14 (B_14 A_14 C_13 C_14 S_14 VDD VSS) FA_X1
+FA15 (B_15 A_15 C_14 C_15 S_15 VDD VSS) FA_X1
+FA16 (B_16 A_16 C_15 C_16 S_16 VDD VSS) FA_X1
+FA17 (B_17 A_17 C_16 C_17 S_17 VDD VSS) FA_X1
+FA18 (B_18 A_18 C_17 C_18 S_18 VDD VSS) FA_X1
+FA19 (B_19 A_19 C_18 C_19 S_19 VDD VSS) FA_X1
+FA20 (B_20 A_20 C_19 C_20 S_20 VDD VSS) FA_X1
+FA21 (B_21 A_21 C_20 C_21 S_21 VDD VSS) FA_X1
+FA22 (B_22 A_22 C_21 C_22 S_22 VDD VSS) FA_X1
+FA23 (B_23 A_23 C_22 C_23 S_23 VDD VSS) FA_X1
+FA24 (B_24 A_24 C_23 C_24 S_24 VDD VSS) FA_X1
+FA25 (B_25 A_25 C_24 C_25 S_25 VDD VSS) FA_X1
+FA26 (B_26 A_26 C_25 C_26 S_26 VDD VSS) FA_X1
+FA27 (B_27 A_27 C_26 C_27 S_27 VDD VSS) FA_X1
+FA28 (B_28 A_28 C_27 C_28 S_28 VDD VSS) FA_X1
+FA29 (B_29 A_29 C_28 C_29 S_29 VDD VSS) FA_X1
+FA30 (B_30 A_30 C_29 C_30 S_30 VDD VSS) FA_X1
+FA31 (B_31 A_31 C_30 S_32 S_31 VDD VSS) FA_X1
+// }}}
+
+// Input simulis
+VVDD ( VDD 0 ) vsource dc=pvdd
+VVSS ( VSS 0 ) vsource dc=0
+    
+_vA_0  (A_0 0)  vsource type=pwl wave=[0n 0 ]
+_vA_1  (A_1 0)  vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_2  (A_2 0)  vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_3  (A_3 0)  vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_4  (A_4 0)  vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_5  (A_5 0)  vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_6  (A_6 0)  vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_7  (A_7 0)  vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_8  (A_8 0)  vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_9  (A_9 0)  vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_10 (A_10 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_11 (A_11 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_12 (A_12 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_13 (A_13 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_14 (A_14 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_15 (A_15 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_16 (A_16 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_17 (A_17 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_18 (A_18 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_19 (A_19 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_20 (A_20 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_21 (A_21 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_22 (A_22 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_23 (A_23 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_24 (A_24 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_25 (A_25 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_26 (A_26 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_27 (A_27 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_28 (A_28 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_29 (A_29 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_30 (A_30 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vA_31 (A_31 0) vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vCI   (CI 0)   vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vB_0  (B_0 0)  vsource type=pwl wave=[0n 0 (tbase-0.01n) 0 tbase pvdd (tbase+tper) pvdd (tbase+tper+0.01n) 0 ]
+_vB_1  (B_1 0)  vsource type=pwl wave=[0n 0 ]
+_vB_2  (B_2 0)  vsource type=pwl wave=[0n 0 ]
+_vB_3  (B_3 0)  vsource type=pwl wave=[0n 0 ]
+_vB_4  (B_4 0)  vsource type=pwl wave=[0n 0 ]
+_vB_5  (B_5 0)  vsource type=pwl wave=[0n 0 ]
+_vB_6  (B_6 0)  vsource type=pwl wave=[0n 0 ]
+_vB_7  (B_7 0)  vsource type=pwl wave=[0n 0 ]
+_vB_8  (B_8 0)  vsource type=pwl wave=[0n 0 ]
+_vB_9  (B_9 0)  vsource type=pwl wave=[0n 0 ]
+_vB_10 (B_10 0) vsource type=pwl wave=[0n 0 ]
+_vB_11 (B_11 0) vsource type=pwl wave=[0n 0 ]
+_vB_12 (B_12 0) vsource type=pwl wave=[0n 0 ]
+_vB_13 (B_13 0) vsource type=pwl wave=[0n 0 ]
+_vB_14 (B_14 0) vsource type=pwl wave=[0n 0 ]
+_vB_15 (B_15 0) vsource type=pwl wave=[0n 0 ]
+_vB_16 (B_16 0) vsource type=pwl wave=[0n 0 ]
+_vB_17 (B_17 0) vsource type=pwl wave=[0n 0 ]
+_vB_18 (B_18 0) vsource type=pwl wave=[0n 0 ]
+_vB_19 (B_19 0) vsource type=pwl wave=[0n 0 ]
+_vB_20 (B_20 0) vsource type=pwl wave=[0n 0 ]
+_vB_21 (B_21 0) vsource type=pwl wave=[0n 0 ]
+_vB_22 (B_22 0) vsource type=pwl wave=[0n 0 ]
+_vB_23 (B_23 0) vsource type=pwl wave=[0n 0 ]
+_vB_24 (B_24 0) vsource type=pwl wave=[0n 0 ]
+_vB_25 (B_25 0) vsource type=pwl wave=[0n 0 ]
+_vB_26 (B_26 0) vsource type=pwl wave=[0n 0 ]
+_vB_27 (B_27 0) vsource type=pwl wave=[0n 0 ]
+_vB_28 (B_28 0) vsource type=pwl wave=[0n 0 ]
+_vB_29 (B_29 0) vsource type=pwl wave=[0n 0 ]
+_vB_30 (B_30 0) vsource type=pwl wave=[0n 0 ]
+_vB_31 (B_31 0) vsource type=pwl wave=[0n 0 ]

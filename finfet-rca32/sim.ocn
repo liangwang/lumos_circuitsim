@@ -1,0 +1,67 @@
+; use with PTM_Bengroup
+
+procedure( do_sim( tech type_ )
+    ofname = strcat( "output_PTMFinFET_" tech type_ ".txt" )
+    of = outfile(ofname "w")
+
+    ;; set simulator
+    simulator( 'spectre )
+
+    ;; set netlist
+    design( "netlist" )
+
+    ;; set model
+    libdir = "/var/home/lw2aw/PTM-MG/models"
+    model = strcat( "ptm" tech type_ )
+    modelFile( list(libdir model) ) 
+
+    tbase=50n
+    tper = 1m
+    desVar( "tbase" tbase "tper" tper)
+
+    temp( 25 )
+
+    resultsDir( strcat( "sim_results_PTMFinFET_" tech type_) )
+
+    foreach( (pvdd ) SupplyList 
+
+        desVar( "pvdd" pvdd )
+
+        analysis( 'tran ?start 0 ?stop 2*tbase+tper ?errpreset 'conservative )
+        save( 'all )
+        run()
+
+        selectResults('tran)
+        plot(v("CI") v("S_32") )
+
+        tphl = delay( ?wf1 v("CI")  ?value1 0.5*pvdd ?nth1 1 ?edge1 'rising ?wf2 v("S_32") ?value2 0.5*pvdd ?nth2 1 ?edge2 'rising)	 
+        tp = tphl
+
+        t_sw_l2h1 = cross(v("CI") 0.9*pvdd 1 'rising)
+        t_sw_l2h2 = cross(v("S_32") 0.9*pvdd 1 'rising)
+        i_sw_l2h = abs(average(clip(i("VVDD:p" ?result "tran-tran") t_sw_l2h1 t_sw_l2h2)))
+        e_sw_l2h = i_sw_l2h * pvdd * (t_sw_l2h2-t_sw_l2h1)
+        p_sw_l2h = i_sw_l2h * pvdd
+
+        p_sw = p_sw_l2h
+        i_sw = p_sw / pvdd
+
+        t2 =  2*tbase+tper
+        t1 =  0
+        Iavg = average(clip(i("VVDD:p" ?result "tran-tran") t1 t2))
+        e = -Iavg * pvdd * (t2-t1)
+        e_leak = e - e_sw_l2h
+        p_leak = e_leak / (t2-t1-t_sw_l2h2+t_sw_l2h1) 
+        i_leak = p_leak / pvdd
+
+        fprintf(of "%e\t%e\t%e\t%e\n", pvdd, tp, p_sw, p_leak)
+    )
+)
+SupplyList = list(1.1 1.05 1.0 0.95 0.9 0.85 0.8 0.75 0.7 0.65 0.6 0.55 0.5 0.45 0.4 0.35 0.3 0.25 0.2)
+do_sim("7" "lstp")
+;; TechList = list( "20", "16", "14", "10", "7" )
+;; TypeList = list( "hp", "lstp" )
+;; foreach( (tech) TechList
+;;     foreach( (type) TypeList
+;;         do_sim( tech type)))
+exit

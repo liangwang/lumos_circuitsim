@@ -1,0 +1,27 @@
+// vim: fdm=marker: ft=spectre
+// Generated for: spectre
+// Generated on: Apr 25 15:31:37 2011
+// Design library name: inv50
+// Design cell name: inv50
+// Design view name: schematic
+simulator lang=spectre
+global 0
+// include "/var/home/lw2aw/PTM-MG/models" section=ptm10hp
+
+M9 (net041 out VDD VDD) pfet m=10
+M6 (net042 out VDD VDD) pfet m=10
+M5 (net043 out VDD VDD) pfet m=10
+M3 (net044 out VDD VDD) pfet m=10
+M1 (out in VDD2 VDD2) pfet m=10
+M8 (net041 out VSS VSS) nfet m=100
+M7 (net042 out VSS VSS) nfet m=100
+M4 (net043 out VSS VSS) nfet m=100
+M2 (net044 out VSS VSS) nfet m=100
+M0 (out in VSS VSS) nfet m=100
+
+
+VVDD ( VDD 0 ) vsource dc=pvdd
+VVDD2 ( VDD2 0 ) vsource dc=pvdd
+VVSS ( VSS 0 ) vsource dc=0
+VVIN ( in 0 ) vsource type=pwl wave=[0 0 tper 0 (tper+0.1n) pvdd (2*tper) pvdd (2*tper+0.1n) 0] 
+

@@ -1,0 +1,7 @@
+// Generated for: spectre
+// Generated on: Oct 24 15:06:13 2011
+// Design library name: or1200
+// Design cell name: ripple_carry_adder
+// Design view name: schematic
+simulator lang=spectre
+global 0

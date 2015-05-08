@@ -1,0 +1,89 @@
+;; OCEAN script to simulate an inverter with a load of fan-of-4 (FO4).
+;; Use PTM-MG (FinFET) model to simulate the circuit.
+;; Supply voltage is swept for each technology nodes.
+
+procedure( do_sim( tech type)
+    ofname = strcat( "output_PTMFinFET_" tech type ".txt" )
+    of = outfile(ofname "w")
+
+    ;; SET SIMULATOR
+    simulator( 'spectre )
+
+    ;; set netlist
+    design( "netlist" )
+
+    ;; set model
+    libdir = "/var/home/lw2aw/PTM-MG/models"
+    model = strcat( "ptm" tech type)
+    modelFile( list(libdir model) )
+
+    tp = 1m
+    desVar( "tper" tp )
+
+    ;; SET TEMPERATURE
+    temp( 25 )
+
+    ;; SET RESULT DIRECTORY
+    resultsDir( strcat( "sim_results_PTMFinFET_" tech type) )
+
+    foreach( (pvdd) SupplyList
+        ;; Define a design variable using the looping parameter
+        desVar( "pvdd" pvdd ) 
+
+        ;; RUN ANALYSIS
+        analysis( 'tran ?start 0 ?stop 10*tp ?errpreset 'conservative )
+        save( 'all )
+        run()           
+
+        ;; PLOT THE SIGNALS
+        selectResults('tran)
+        ;; plot( v("in") v("out") i("VVDD2:p" ?result "tran-tran") )
+
+        ;; MEASURE the propagation delay of the inverter
+        tplh = delay( v("in") pvdd/2.0 1 'falling v("out") pvdd/2.0 1 'rising )
+        tphl = delay( v("in") pvdd/2.0 1 'rising v("out")  pvdd/2.0 1 'falling )    
+        tprop = (tphl + tplh) /  2.0
+
+        ;; MEASURE the switching power low-to-high
+        ;; t_switch_l2h_start = cross( v("in") 0.1*pvdd 1 'rising)
+        ;; t_switch_l2h_end = cross( v("out") 0.1*pvdd 1 'falling)
+        ;; i_switch_l2h = abs(average(clip(i("VVDD2:p" ?result "tran-tran") t_switch_l2h_start t_switch_l2h_end)))
+        ;; p_switch_l2h = i_switch_l2h * pvdd
+        ;; e_switch_l2h = p_switch_l2h * (t_switch_l2h_end - t_switch_l2h_start)
+
+        ;; MEASURE the switching power high-to-low
+        t_switch_h2l_start = cross( v("in") 0.9*pvdd 1 'falling)
+        t_switch_h2l_end = cross( v("out") 0.9*pvdd 1 'rising)
+        i_switch_h2l = abs(average(clip(i("VVDD2:p" ?result "tran-tran") t_switch_h2l_start t_switch_h2l_end)))
+        p_switch_h2l = i_switch_h2l * pvdd
+        e_switch_h2l = p_switch_h2l * (t_switch_h2l_end - t_switch_h2l_start)
+
+        ;; p_switch = (p_switch_l2h + p_switch_h2l) / 2.0
+        p_switch = p_switch_h2l
+
+        t2 = 5*tp
+        t1 = 0
+        Iavg = abs(average(clip(i("VVDD2:p" ?result "tran-tran") t1 t2)))
+        e = Iavg * pvdd * (t2-t1)
+        e_leak = e - e_switch_h2l
+        p_leak = e_leak / ( t2 - t1 - (t_switch_h2l_end-t_switch_h2l_end))
+
+        t2 = 10*tp
+        t1 = 5*tp
+        Iavg = abs(average(clip(i("VVDD2:p" ?result "tran-tran") t1 t2)))
+        p_leak2 = Iavg * pvdd
+        
+        ;; print the measurement results to the output file 
+        ;; fprintf( of "%e\t%e\t%e\t%e\t%e\t%e\t%e\n", pvdd, tprop, p_switch_l2h, p_switch_h2l, p_switch, p_leak, p_leak2)   
+        fprintf( of "%e\t%e\t%e\t%e\t%e\n ", pvdd, tprop, p_switch, p_leak, p_leak2)   
+    )
+)
+SupplyList = list(1.1 1.05 1.0 0.95 0.9 0.85 0.8 0.75 0.7 0.65 0.6 0.55 0.5 0.45 0.4 0.35 0.3 0.25 0.2)
+TechList = list( "20", "16", "14", "10", "7" )
+TypeList = list( "hp", "lstp" )
+foreach( (tech) TechList
+    foreach( (type) TypeList
+        do_sim( tech type)))
+;; SupplyList = list( 0.2 )
+;; do_sim( "16" "hp" )
+exit
