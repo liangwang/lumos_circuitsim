@@ -32,7 +32,7 @@ procedure( do_sim( tech type_ )
         run()
 
         selectResults('tran)
-        plot(v("CI") v("S_32") )
+        ;; plot(v("CI") v("S_32") )
 
         tphl = delay( ?wf1 v("CI")  ?value1 0.5*pvdd ?nth1 1 ?edge1 'rising ?wf2 v("S_32") ?value2 0.5*pvdd ?nth2 1 ?edge2 'rising)	 
         tp = tphl
@@ -56,8 +56,9 @@ procedure( do_sim( tech type_ )
 
         fprintf(of "%e\t%e\t%e\t%e\n", pvdd, tp, p_sw, p_leak)
     )
+    close( of )
 )
-SupplyList = list(1.1 1.05 1.0 0.95 0.9 0.85 0.8 0.75 0.7 0.65 0.6 0.55 0.5 0.45 0.4 0.35 0.3 0.25 0.2)
+SupplyList = list(1.1 1.05 1.0 0.95 0.9 0.85 0.8 0.75 0.7 0.65 0.6 0.55 0.5 0.45 0.4 0.35 0.3 0.25 0.2 )
 do_sim("7" "lstp")
 ;; TechList = list( "20", "16", "14", "10", "7" )
 ;; TypeList = list( "hp", "lstp" )
